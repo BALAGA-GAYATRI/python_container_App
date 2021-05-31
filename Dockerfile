@@ -1,17 +1,16 @@
-# This dockerfile utilizes components licensed by their respective owners/authors.
-# Prior to utilizing this file or resulting images please review the respective licenses at: https://docs.python.org/3/license.html
+# first layer is our python base image enabling us to run pip
+FROM python:3.7-windowsservercore-1809 
 
-FROM microsoft/windowsservercore
+# create directory in the container for adding your files
+WORKDIR /user/src/app 
 
-LABEL Description="Python" Vendor="Python Software Foundation" Version="3.7.3"
+# copy over the requirements file and run pip install to install the packages into your container at the directory defined above
+COPY requirements.txt ./ 
+RUN pip install --no-cache-dir -r requirements.txt --user 
+COPY . . 
 
-RUN powershell.exe -Command \
-    $ErrorActionPreference = 'Stop'; \
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-    wget https://www.python.org/ftp/python/3.7.3/python-3.7.3.exe -OutFile c:\python-3.7.3.exe ; \
-    Start-Process c:\python-3.7.3.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait ; \
-    Remove-Item c:\python-3.7.3.exe -Force
+# enter entry point parameters executing the container
+ENTRYPOINT ["python", "./runserver.py"] 
 
-RUN echo print("Hello World!") > c:\hello.py
-
-CMD ["py", "c:/hello.py"]
+# exposing the port to match the port in the runserver.py file
+EXPOSE 5555
