@@ -1,4 +1,4 @@
-name: Webapp_Linux_Container_Workflow
+name: Webapp_multi_Container_Workflow
 on: 
   [workflow_dispatch]
 
@@ -60,4 +60,4 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
 #         images: ${{ env.CONTAINER_REGISTRY }}/containerwebapp/djangoapp:latest
-        configuration-file: docker-compose.yml
+        configuration-file: compose-wordpress.yml
