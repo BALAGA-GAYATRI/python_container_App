@@ -3,7 +3,7 @@ on:
   [workflow_dispatch]
 
 env:
-  AZURE_WEBAPP_NAME: linuxcontainer   # set this to your application's name
+  AZURE_WEBAPP_NAME: multi-container   # set this to your application's name
   CONTAINER_REGISTRY: l2testscontainerregistry.azurecr.io  # set secret with Container Registry URL, example : xyz.azurecr.io 
   
 jobs:
