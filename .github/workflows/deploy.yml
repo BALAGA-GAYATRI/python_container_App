@@ -1,0 +1,63 @@
+name: Webapp_Linux_Container_Workflow
+on: 
+  [workflow_dispatch]
+
+env:
+  AZURE_WEBAPP_NAME: linuxcontainer   # set this to your application's name
+  CONTAINER_REGISTRY: l2testscontainerregistry.azurecr.io  # set secret with Container Registry URL, example : xyz.azurecr.io 
+  
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    # checkout the repo
+#     - name: 'Checkout Github Action' 
+#       uses: actions/checkout@master
+#       with:
+#         repository: Azure-Samples/docker-django-webapp-linux
+# #         token: ${{ secrets.GITSSHKEY }}
+#         ref: master
+      
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_WEBAPP_SPN }}
+      
+#     - uses: azure/docker-login@v1
+#       with:
+#         login-server: l2testscontainerregistry.azurecr.io
+#         username: ${{ secrets.L2TEST_ACR_USERNAME }}
+#         password: ${{ secrets.L2TEST_ACR_PASSWORD }}
+    
+#     - run: |
+#         docker build . -t ${{ env.CONTAINER_REGISTRY }}/containerwebapp/djangoapp:latest
+#         docker push ${{ env.CONTAINER_REGISTRY }}/containerwebapp/djangoapp:latest 
+        
+#     - name: Set Web App ACR authentication
+#       uses: Azure/appservice-settings@v1
+#       with:
+#         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+#         app-settings-json: |
+#           [
+#               {
+#                   "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+#                   "value": "${{ secrets.L2TEST_ACR_PASSWORD }}",
+#                   "slotSetting": false
+#               },
+#               {
+#                   "name": "DOCKER_REGISTRY_SERVER_URL",
+#                   "value": "https://${{ env.CONTAINER_REGISTRY }}",
+#                   "slotSetting": false
+#               },
+#               {
+#                   "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+#                   "value": "${{ secrets.L2TEST_ACR_USERNAME  }}",
+#                   "slotSetting": false
+#               }
+#           ]  
+          
+    - uses: azure/webapps-deploy@users/balaga-gayatri/multicontainer-support
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+#         images: ${{ env.CONTAINER_REGISTRY }}/containerwebapp/djangoapp:latest
+        configuration-file:
