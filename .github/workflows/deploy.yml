@@ -56,7 +56,7 @@ jobs:
 #               }
 #           ]  
           
-    - uses: azure/webapps-deploy@v2 #users/balaga-gayatri/multicontainer-support
+    - uses: azure/webapps-deploy@users/balaga-gayatri/multicontainer-support
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
 #         images: ${{ env.CONTAINER_REGISTRY }}/containerwebapp/djangoapp:latest
